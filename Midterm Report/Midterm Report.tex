@@ -73,7 +73,7 @@
 %	ABSTRACT
 %----------------------------------------------------------------------------------------
 
-\Abstract{The country of Tanzania is currently facing a water supply challenge. Water wells are not being fixed quickly, leading to thousands of people not having access to a clean water supply.The Tanzanian Ministry of Water is trying to predict whether water wells are functional, functional - in need of repair, or not functional so that workers are allocated to fixing water wells rather than checking the status of wells. The Ministry has reached out to us to create a model that is able to predict which water wells are functional and which ones need to be fixed. }
+\Abstract{The country of Tanzania is currently facing a water supply challenge. Water wells are not being fixed quickly, leading to thousands of people not having access to a clean water supply. The Tanzanian Ministry of Water is trying to predict whether water wells are functional, functional - in need of repair, or not functional so that workers are allocated to fixing water wells rather than checking the status of wells. The Ministry has reached out to us to create a model that is able to predict which water wells are functional and which ones need to be fixed. }
 
 %----------------------------------------------------------------------------------------
 
@@ -106,7 +106,7 @@ The data set comprises of a variable matrix with 39 features and 59,400 rows of 
 \\[-1.5\baselineskip]
 \break
 
-There were plenty of missing values and questionable zero values in columns. In particular, we had 3056 missing values in permit column, 3636 missing in installer, and 3622 missing in funder. Incorrect zero values occurred in the longitude column 1812 times (Longitude Range: 29$^\circ$ E to 41$^\circ$ E) and 18897 times in the construction year column (all other year in 2000s). Our approach to solve these issues will come addressed further in the data cleaning section. To get a sense of where all these water wells are located, we plotted the water wells on a geographical map with blue indicating the well is functioning, and red indicating not functioning (see figure 1).
+There were plenty of missing values and questionable zero values in columns. We had 3056 missing values in permit column, 3636 missing in installer, and 3622 missing in funder. Incorrect zero values occurred in the longitude column 1812 times (Longitude Range: 29$^\circ$ E to 41$^\circ$ E) and 18897 times in the construction year column (all other year in 2000s). Our approach to solve these issues will come addressed further in the data cleaning section. To get a sense of where all these water wells are located, we plotted the water wells on a geographical map with blue indicating the well is functioning, and red indicating not functioning (see figure 1).
 
 \setlength{\abovecaptionskip}{15pt plus 3pt minus 2pt}
 
@@ -121,7 +121,7 @@ There were plenty of missing values and questionable zero values in columns. In 
 
 \subsection{Data Visualization}
 
-We first used histograms to visualize which variables were able to separate well functionality most distinctly. We found that whether a water well had a permit (legally authorized to exist) or not greatly affected the classification of the well. If a water well has a permit, it is much more likley to be functional than if it does not have a permit (see figure 2 where a random sample of the data is plotted). This makes permit a strong predicter of functionality of well for our model.
+We first used histograms to visualize which variables could separate well functionality most distinctly. We found that whether a water well had a permit (legally authorized to exist) or not greatly affected the classification of the well. If a water well has a permit, it is much more likely to be functional than if it does not have a permit (see figure 2 where a random sample of the data is plotted). This makes permit a strong predicter of functionality of well for our model.
 \\[-1.5\baselineskip]
 \break
 
@@ -132,7 +132,7 @@ We first used histograms to visualize which variables were able to separate well
 \label{fig:permit}
 \end{figure}
 
-Another question that came up was how the variability in continuous variables could be different depending on the classifications. We looked into the variable called GPS Height that gives the height of the water well realtive to sea level in meters. We created a boxplot that displays the spread of the GPS Height for functional needs repair, non-functional, and functional wells (see figure 3). We see that the median GPS height of non-functional wells is significantly lower than the median of both functional and functional needs repair wells. This implies that non-functional wells tend to have a lower GPS height than the other wells.
+Another question that came up was how the variability in continuous variables could be different depending on the classifications. We considered the variable called GPS Height that gives the height of the water well relative to sea level in meters. We created a boxplot that displays the spread of the GPS Height for functional needs repair, non-functional, and functional wells (see figure 3). We see that the median GPS height of non-functional wells is significantly lower than the median of both functional and functional needs repair wells. This implies that non-functional wells tend to have a lower GPS height than the other wells.
 \break
 
 \setlength{\belowcaptionskip}{-15pt}
@@ -164,11 +164,11 @@ After this discovery, we considered the 21 regions in Tanzania and the percent o
 
 \subsection{Cleaning the Data}
 
-We immediately left out of our model any columns that were nearly duplicates of each other (more than 95\% of same row values amd measuring same thing). Then, we changed the column that had calendar date of well status check (day,month,year) to just the number of days from the current date to the earliest date of well status check. So if the earliest date any well was checked is 10/14/2002, then a well checked on 12/03/2013 would have 4069 as its value. We also transformed the installer column (which company installed the well). Since there are 2113 unique installer values and the majority of rows belonged to the top two installers (outliers compared to the rest of the data), we simply created three new binary variables (one for the installer with the most wells, one for the installer with the second most wells, all other installers placed in a "other" column, and a column for missing values discussed in the next paragraph.)
+We immediately left out of our model any columns that were nearly duplicates of each other (more than 95\% of same row values and measuring same thing). Then, we changed the column that had calendar date of well status check (day, month, year) to just the number of days from the current date to the earliest date of water well status check. So, if the earliest date any well was checked is 10/14/2002, then a well checked on 12/03/2013 would have 4069 as its value. We also transformed the installer column (which company installed the well). Since there are 2113 unique installer values and the majority of rows belonged to the top two installers (outliers compared to the rest of the data), we simply created three new binary variables (one for the installer with the most wells, one for the installer with the second most wells, all other installers placed in a "other" column, and a column for missing values discussed in the next paragraph.)
 \\[-1.5\baselineskip]
 \\[0\baselineskip]
 \break
-For the categorical variables, we used one-hot encoding in order to change a variable of one column and d distinct values to d binary variable columns. This increased the number of columns of our model from 28 to 220 columns. If values were missing from a particular column, we created a new binary variable that takes one if a value is missing and zero otherwise. In this way, we could retain some information, even for missing values and not have to delete an entire row just for 1 missing value.  For logistic regression, we standardized continuous variables such as longitude and latitude of water well since regularized least squares is not scaling invariant.
+For the categorical variables, we used one-hot encoding to change a variable of one column and d distinct values to d binary variable columns. This increased the number of columns of our model from 28 to 220 columns. If values were missing from a particular column, we created a new binary variable that takes one if a value is missing and zero otherwise. In this way, we could retain some information, even for missing values and not have to delete an entire row just for 1 missing value.  For logistic regression, we standardized continuous variables such as longitude and latitude of water well since regularized least squares is not scaling invariant.
 \\[-1.5\baselineskip]
 \\[0\baselineskip]
 \break
@@ -178,13 +178,13 @@ We noticed for some variables such as population and GPS height that the distrib
 
 \subsection{Logistic Regression}
 
-For our intial model, we chose to use logistic regression model (denoted by $h(x)$) because the water well problem is a classification problem. We first split the data into 60\% training set, 20\% validation set, and 20\% testing set. We used the validation set in order to calculate the $\lambda$ that minimizes the percent of misclassifcations. The objective function of logistic regression is defined as the following: 
+For our initial model, we chose to use logistic regression model (denoted by $h(x)$) because the water well problem is a classification problem. We first split the data into 60\% training set, 20\% validation set, and 20\% testing set. We used the validation set to calculate the $\lambda$ that minimizes the percent of misclassifications. The objective function of logistic regression is defined as the following: 
 
 \begin{equation}
  h(x) = log(1+e^{(-yw^Tx)}) + \lambda||w||_1
 \end{equation}
 
-Since logistic regression is a binary logistic model (1 if water well is a certain classification and 0 otherwise), we could not simply use one regression to perfrom the analysis. Instead, we created 3 different logistic regression models for each class i (one for each classification of functional, non-functional, functional - needs repair). We then used that fact the logistic regression returns the probability that a water well is a certain classifcation to just simply take the maximum probability of the three models in order to classify the well (see equation 2).
+Since logistic regression is a binary logistic model (1 if water well is a certain classification and 0 otherwise), we could not simply use one regression to perform the analysis. Instead, we created 3 different logistic regression models for each class i (one for each classification of functional, non-functional, functional - needs repair). We then used that fact the logistic regression returns the probability that a water well is a certain classifcation to just simply take the maximum probability of the three models in order to classify the well (see equation 2).
 
 \begin{equation}
  y= \underset{i}{\mathrm{argmax}}\, h_i(x) 
@@ -203,14 +203,14 @@ Another model we considered is random forest. The way random forest works is tha
 \label{fig:rf}
 \end{figure}
 
-For our random forest model,  we used 30 trees in our forest. We allowed trees to grow to a maximum depth of 20 and assigned trees to randomly pick the squart root of the total number of features to split upon. The number of features to split upon and the maximum depth are parameters that we will fine tune later in the project. Random forest prevents underfitting since trees are randomly assigned to a subset of features to split on which helps to account for all the different characteristics water wells may have (flexible). Also, random forest is not prone to overfitting since the majority vote of a group of trees prevents overfit trees from weighing heavily on the classification. 
+For our random forest model,  we used 30 trees in our forest. We allowed trees to grow to a maximum depth of 20 and assigned trees to randomly pick the square root of the total number of features to split upon. The number of features to split upon and the maximum depth are parameters that we will fine tune later in the project. Random forest prevents underfitting since trees are randomly assigned to a subset of features to split on which helps to account for all the different characteristics water wells may have (flexible). Also, random forest is not prone to overfitting since the majority vote of a group of trees prevents overfit trees from weighing heavily on the classification. 
 
 \section{Results}
 
-To test the effectiveness of both models, we calculated accuracy as the percentage of correctly classified water wells in our testing set by the models. We found that logistic regression was able to classify with an accuracy of about 73\%. On the other hand, random forest was able to classify with an astonishing 80\% accuracy. An indication that the accuracy of the test data is low for logistic regression may lie in the fact that the training error for logistic regression is also low ( about 74\% also) which implies that logistic regression has a relatively high bias.
+To test the effectiveness of both models, we calculated accuracy as the percentage of correctly classified water wells in our testing set by the models. We found that logistic regression was able to classify with an accuracy of about 73\%. On the other hand, random forest was able to classify with an astonishing 80\% accuracy. An indication that the accuracy of the test data is low for logistic regression may lie in the fact that the training error for logistic regression is also low (about 74\% also) which implies that logistic regression has a relatively high bias.
 
 \section{Next Steps}
 
-To improve our model, we will look to transform some of our variables in order to capture information better than simply including data in its raw state. For example, we can add a binary column that indicates whether the well was checked in the dry season or the rainy season . This can show trends of how weather seasonality may relate to the probability of a water well being functional. Our ultimate goal is to be able to classify water wells with the most accuracy and even to classify better than the current best model for this problem (classifies with 82\% accuracy). Another route worth considering is to help the Tanzanian Ministry of Water learn about which features lead to the highest liklihood of a water well functioning properly. This could help the Ministry to know how to build new water wells so that they are more likely to work.
+To improve our model, we will look to transform some of our variables in order to capture information better than simply including data in its raw state. For example, we can add a binary column that indicates whether the well was checked in the dry season or the rainy season. This can show trends of how weather seasonality may relate to the probability of a water well being functional. Our goal is to be able to classify water wells with the most accuracy and even to classify better than the current best model for this problem (classifies with 82\% accuracy). Another route worth considering is to help the Tanzanian Ministry of Water learn about which features lead to the highest likelihood of a water well functioning properly. This could help the Ministry to know how to build new water wells so that they are more likely to work.
 
 \end{document}
